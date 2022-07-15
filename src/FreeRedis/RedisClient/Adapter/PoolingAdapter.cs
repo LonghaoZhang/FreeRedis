@@ -81,7 +81,8 @@ namespace FreeRedis
                         try
                         {
                             rds.Write(cmd);
-                            rt = rds.Read(cmd);
+                            rt = rds.Read(cmd);                            
+                            //Console.WriteLine($"call socket value = {rt.Value.ConvertTo<string>()}");
                         }
                         catch (ProtocolViolationException)
                         {

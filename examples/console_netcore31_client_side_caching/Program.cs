@@ -16,7 +16,7 @@ namespace console_netcore31_client_side_caching
             //var r = new RedisClient("127.0.0.1:6379", false); //redis 3.2 Single test
             //var r = new RedisClient("127.0.0.1:6379,database=1,min pool size=500,max pool size=500"); //redis 3.2
             //var r = new RedisClient("127.0.0.1:6379,database=1", "127.0.0.1:6379,database=1");
-            var r = new RedisClient(new [] { (ConnectionStringBuilder)"192.168.164.10:6379,database=1", (ConnectionStringBuilder)"192.168.164.10:6379,database=2" },  null); //redis 6.0
+            var r = new RedisClient(new [] { (ConnectionStringBuilder)"192.168.48.123:6379,database=1" },  null); //redis 6.0
             r.Serialize = obj => JsonConvert.SerializeObject(obj);
             r.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);
             r.Notice += (s, e) => Console.WriteLine(e.Log);
