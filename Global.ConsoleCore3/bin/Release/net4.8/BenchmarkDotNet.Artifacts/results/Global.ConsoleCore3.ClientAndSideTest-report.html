@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Global.ConsoleCore3.ClientAndSideTest-20220713-173347</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1766 (21H2)
+11th Gen Intel Core i7-11370H 3.30GHz, 1 CPU, 8 logical and 4 physical cores
+  [Host]     : .NET Framework 4.8 (4.8.4515.0), X64 RyuJIT  [AttachedDebugger]
+  Job-RLKOES : .NET Framework 4.8 (4.8.4515.0), X64 RyuJIT
+</code></pre>
+<pre><code>Runtime=.NET Framework 4.8  
+</code></pre>
+
+<table>
+<thead><tr><th> Method</th><th>  Mean</th><th>Error</th><th>StdDev</th><th>Gen 0</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>OnlyRedis</td><td>4,625.535 &mu;s</td><td>190.6610 &mu;s</td><td>547.0422 &mu;s</td><td>7.8125</td><td>88,368 B</td>
+</tr><tr><td>ClientAndSide</td><td>1.859 &mu;s</td><td>0.0336 &mu;s</td><td>0.0805 &mu;s</td><td>0.2537</td><td>1,597 B</td>
+</tr></tbody></table>
+</body>
+</html>

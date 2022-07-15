@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "FreeRedis/0.5.4": {
+        "runtime": {
+          "FreeRedis.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FreeRedis/0.5.4": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
