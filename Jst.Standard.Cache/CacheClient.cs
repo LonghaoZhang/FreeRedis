@@ -8,14 +8,24 @@ namespace Jst.Standard.Cache
 {
     public partial class CacheClient<T>
     {
-        static Lazy<RedisClient> _cliLazy = new Lazy<RedisClient>(() =>
+        public CacheClient(string _objectCachePrefixKey)
         {
-            var r= new RedisClient(LoadConfig.Bulider());
+            ObjectCachePrefixKey = _objectCachePrefixKey;
+        }
+        public string ObjectCachePrefixKey { get; set; }
+    }
+
+    public class BaseRedis
+    {
+        internal static Lazy<RedisClient> _cliLazy = new Lazy<RedisClient>(() =>
+        {
+            var r = new RedisClient(LoadConfig.Bulider()); //redis 6.0
             r.Serialize = obj => JsonConvert.SerializeObject(obj);
             r.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);
             return r;
         });
-        internal static RedisClient redisClient => _cliLazy.Value;
-        public string ObjectCachePrefixKey { get; set; }
+       
+        public static RedisClient Client => _cliLazy.Value;
     }
+    
 }

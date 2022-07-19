@@ -81,7 +81,7 @@ namespace S3.ConsoleCore3
         {
             for (var i = 0; i < count; i++)
             {
-                var val = cache.Get(i.ToString(), _ => JsonConvert.SerializeObject(GetLgDBData(i)));
+                var val = cache.GetString(i.ToString());
             }
         }
 

@@ -10,7 +10,9 @@ namespace Jst.Standard.Cache
     {
         string ObjectCachePrefixKey{get;set;}
         #region string
-        T Get(string key);        
+        long ClientId();
+        T Get(string key);
+        string GetString(string key);
         T Get(string key, Func<string, T> data, TimeSpan timeout = default);
         long Del(params string[] keys);
         #endregion

@@ -15,13 +15,13 @@ namespace Global.ConsoleCore3
         static IDatabase redis = ConnectionMultiplexer.Connect("192.168.48.123:6379").GetDatabase(0);
         static RedisClient redisClient = new Lazy<RedisClient>(() =>
         {
-            var r = new RedisClient("r-bp1mjy5544toippf8lpd.redis.rds.aliyuncs.com:6379,password=guanlong:GwLXw9ySn2xjvzC4JwUW");
-            //var r = new RedisClient("192.168.48.123:6379);
+            //var r = new RedisClient("r-bp1mjy5544toippf8lpd.redis.rds.aliyuncs.com:6379,password=guanlong:GwLXw9ySn2xjvzC4JwUW");
+            var r = new RedisClient("192.168.48.123:6379");
             r.Serialize = obj => JsonConvert.SerializeObject(obj);
             r.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);         
             return r;
         }).Value;
-        static int count = 10002;
+        static int count = 1;
         public static ICacheClient<Order> OrderCache = new Lazy<ICacheClient<Order>>(() =>
         {
             return CacheService<Order>.CreateClient(CacheStoreType.LoaclAndRedis, "Order");
@@ -32,11 +32,11 @@ namespace Global.ConsoleCore3
         }).Value;
         public static ICacheClient<string> UserNameCache = new Lazy<ICacheClient<string>>(() =>
         {
-            return CacheService<string>.CreateClient(CacheStoreType.OnlyReids, "UserName");
+            return CacheService<string>.CreateClient(CacheStoreType.LoaclAndRedis, "UserName");
         }).Value;
         public static ICacheClient<string> UserMobleCache = new Lazy<ICacheClient<string>>(() =>
         {
-            return CacheService<string>.CreateClient(CacheStoreType.OnlyLocal, "UserMobile");
+            return CacheService<string>.CreateClient(CacheStoreType.LoaclAndRedis, "UserMobile");
         }).Value;
         static void Main(string[] args)
         {
@@ -46,32 +46,33 @@ namespace Global.ConsoleCore3
             //Console.WriteLine(UserNameCache.Get("gl:name"));
             //Console.WriteLine(UserNameCache.Get("gl:name"));
             //Console.WriteLine(UserNameCache.Del("gl:name"));
-#if RELEASE
+#if DEBUG
             while (true)
             {
-                //TestData();
-                //TestData1();
-                //Console.WriteLine("--0-cas-1--");
-                //TestData2();
-                //TestData3();
-                //Console.WriteLine("--2--dic--3--");
-                //TestData4();
-                //TestData5();
-                //Console.WriteLine("--4--redis--5---");
-                //TestData6();
-                //TestData7();
-                //Console.WriteLine("--6--local--7---");
-                //TestData8();
-                //TestData9();
-                //Console.WriteLine("--8--cas--9---");
+                TestData();
+                TestData1();
+                Console.WriteLine("--0-cas-1--");
+                TestData2();
+                TestData3();
+                Console.WriteLine("--2--dic--3--");
+                TestData4();
+                TestData5();
+                Console.WriteLine("--4--redis--5---");
+                TestData6();
+                TestData7();
+                Console.WriteLine("--6--local--7---");
+                TestData8();
+                TestData9();
+                Console.WriteLine("--8--cas--9---");
                 TestData10();
-                //TestData11();
-                //Console.WriteLine("--10--free--11---");
-                //TestData12();
-                //Console.WriteLine("--12--staticExchange----");
+                TestData11();
+                Console.WriteLine("--10--free--11---");
+                TestData12();
+                Console.WriteLine("--12--staticExchange----");
                 Console.WriteLine("------------------------------------");
+                Console.ReadLine();
             }
-#elif DEBUG
+#elif RELEASE
             TestDelData();
 #endif
         }

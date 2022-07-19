@@ -11,7 +11,13 @@ namespace Jst.Standard.Cache
     {
         public T Get(string key)
         {
-            return this.Get(key);
+            key = $"{ObjectCachePrefixKey}:{key}";
+            return this.LGet(key);
+        }
+        public string GetString(string key)
+        {
+            key = $"{ObjectCachePrefixKey}:{key}";
+            return this.LGet(key)?.ToString();
         }
         public T Get(string key, Func<string, T> data, TimeSpan timeout)
         {
@@ -56,7 +62,10 @@ namespace Jst.Standard.Cache
         {
             throw new NotImplementedException();
         }
-
+        public long ClientId() 
+        {
+            throw new NotImplementedException();
+        }
 
         public Dictionary<string, T> hdata = new Dictionary<string, T>();
         

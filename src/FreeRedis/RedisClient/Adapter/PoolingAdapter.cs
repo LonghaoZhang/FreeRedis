@@ -81,8 +81,10 @@ namespace FreeRedis
                         try
                         {
                             rds.Write(cmd);
-                            rt = rds.Read(cmd);                            
-                            //Console.WriteLine($"call socket value = {rt.Value.ConvertTo<string>()}");
+                            rt = rds.Read(cmd);
+                            #if DEBUG
+                            Console.WriteLine($"读取远程redis value = {rt.Value.ConvertTo<string>()}");
+                            #endif
                         }
                         catch (ProtocolViolationException)
                         {

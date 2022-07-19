@@ -8,20 +8,22 @@ namespace S3.ConsoleCore3
 {
     public class BaseClient
     {
-        public static int count = 1;
-        public static CSRedis.CSRedisClient csredis = new CSRedis.CSRedisClient("192.168.48.123:6379,database=2,poolsize=100");
-        public static IDatabase redis = ConnectionMultiplexer.Connect("192.168.48.123:6379").GetDatabase(0);
+        public static int count = 1*10000;
+        static ConnectionStringBuilder[] connectionStringBuilder = { (ConnectionStringBuilder)"r-bp173rz6i5rvmp2219.redis.rds.aliyuncs.com:6379,password=guanlong:GwLXw9ySn2xjvzC4JwUW,max pool size=500,min pool size=100,retry=1,protocol=3" };
+        public static CSRedis.CSRedisClient csredis = new CSRedis.CSRedisClient("r-bp173rz6i5rvmp2219.redis.rds.aliyuncs.com:6379,password=guanlong:GwLXw9ySn2xjvzC4JwUW,max pool size=500,min pool size=100,retry=1,protocol=3");
+        public static IDatabase redis = ConnectionMultiplexer.Connect("r-bp173rz6i5rvmp2219.redis.rds.aliyuncs.com:6379,password=guanlong:GwLXw9ySn2xjvzC4JwUW").GetDatabase(0);
         public static IDatabase LazyRedis = new Lazy<IDatabase>(() => {
-            return ConnectionMultiplexer.Connect("192.168.48.123:6379").GetDatabase(0);
+            return ConnectionMultiplexer.Connect("r-bp173rz6i5rvmp2219.redis.rds.aliyuncs.com:6379,password=guanlong:GwLXw9ySn2xjvzC4JwUW").GetDatabase(0);
         }).Value;
         public static RedisClient lazyFree = new Lazy<RedisClient>(() =>
         {
-            var r = new RedisClient("192.168.48.123:6379");
+            var r = new RedisClient(connectionStringBuilder);
             r.Serialize = obj => JsonConvert.SerializeObject(obj);
             r.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);
             return r;
         }).Value;
-        public static RedisClient free = new RedisClient("192.168.48.123:6379,poolsize=100,min pool size=100")
+        
+        public static RedisClient free = new RedisClient(connectionStringBuilder)
         {
             Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type),
             Serialize = obj => JsonConvert.SerializeObject(obj)

@@ -7,7 +7,9 @@ namespace Jst.Standard.Cache
     public class CacheService<T>: CacheServiceBase
     {      
 
-        internal static CacheSettings CacheSettings => _cacheSettings == null ? new CacheSettings() : _cacheSettings;
+        public static CacheSettings CacheSettings => _cacheSettings == null ? new CacheSettings() : _cacheSettings;
+        public static ICacheClient<T> cacheClient;
+        static object _mutilTypeNameLock = new object();
 
         static CacheSettings _cacheSettings { get; set; }
         /// <summary>
@@ -19,46 +21,53 @@ namespace Jst.Standard.Cache
         public void InitCacheSettings(CacheSettings settings)
         {
             _cacheSettings = settings;
+            if (settings != null && settings.FilterKeys != null && settings.FilterKeys.Length > 0)
+            {
+                for (var i = 0; i < settings.FilterKeys.Length; i++)
+                {
+                    FilterKeys.Add(settings.FilterKeys[i]);
+                }
+            }
         }
         public static ICacheClient<T> CreateClient(CacheStoreType storeType, string CacheName)
         {
-            var ObjectCachePrefixKey = CacheHelper.GeneratePrefix<T>(CacheName);
-            ICacheClient<T> cacheClient;
-            switch (storeType)
-            {                       
-                case CacheStoreType.OnlyLocal:
-                    cacheClient = new LocalCacheClient<T>();
-                    cacheClient.ObjectCachePrefixKey = ObjectCachePrefixKey;
-                    return cacheClient;
-                default:
-                    cacheClient = new CacheClient<T>();
-                    cacheClient.ObjectCachePrefixKey = ObjectCachePrefixKey;
-                    if (storeType == CacheStoreType.LoaclAndRedis)
-                    {
-                        AddFilterKeys(cacheClient.ObjectCachePrefixKey);
-                        LoadClientAndSide();
-                    }
-                    return cacheClient;
+            lock (_mutilTypeNameLock)
+            {
+                var ObjectCachePrefixKey = CacheHelper.GeneratePrefix<T>(CacheName);
+                var existFilterKeys = CacheServiceBase.FilterKeys?.Contains(ObjectCachePrefixKey)??false;                
+                ICacheClient<T> cacheClient;
+                switch (storeType)
+                {
+                    case CacheStoreType.OnlyLocal:
+                        cacheClient = new LocalCacheClient<T>(ObjectCachePrefixKey);
+                        return cacheClient;
+                    default:
+                        cacheClient = new CacheClient<T>(ObjectCachePrefixKey);
+                        if (storeType == CacheStoreType.LoaclAndRedis)
+                        {
+                            if (!existFilterKeys)
+                            {
+                                CacheServiceBase.AddFilterKeys(ObjectCachePrefixKey);
+                                BaseRedis.Client.UseClientSideCaching(new ClientSideCachingOptions
+                                {
+                                    Capacity = CacheService<T>.CacheSettings.Capacity,
+                                    KeyFilter = key => CacheHelper.KeyFilterStartsWith(CacheServiceBase.FilterKeys, key),
+                                    CheckExpired = (key, dt) => DateTime.Now.Subtract(dt) > CacheService<T>.CacheSettings.ClientKeyTimeOut
+                                });
+                            }
+                        }
+                        return cacheClient;
+                }
             }
         }
 
-        static void LoadClientAndSide()
+        public static void LoadClientAndSide()
         {
-            var cacheSettings = new CacheSettings();
-            CacheClient<T>.redisClient.UseClientSideCaching(new ClientSideCachingOptions
+            Client.UseClientSideCaching(new ClientSideCachingOptions
             {
-                Capacity = cacheSettings.Capacity,
+                Capacity = CacheSettings.Capacity,
                 KeyFilter = key => CacheHelper.KeyFilterStartsWith(FilterKeys, key),
-                CheckExpired = (key, dt) => DateTime.Now.Subtract(dt) > cacheSettings.ClientKeyTimeOut
-            });
-        }
-        static void LoadClientAndSide(CacheSettings cacheSettings)
-        {
-            CacheClient<T>.redisClient.UseClientSideCaching(new ClientSideCachingOptions
-            {
-                Capacity = cacheSettings.Capacity,
-                KeyFilter = key => CacheHelper.KeyFilterStartsWith(FilterKeys, key),
-                CheckExpired = (key, dt) => DateTime.Now.Subtract(dt) > cacheSettings.ClientKeyTimeOut
+                CheckExpired = (key, dt) => DateTime.Now.Subtract(dt) > CacheSettings.ClientKeyTimeOut
             });
         }
     }

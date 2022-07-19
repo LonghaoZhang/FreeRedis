@@ -6,11 +6,8 @@
 	<PropertyGroup Condition="'$(TargetFramework)' != 'net40'">
 		<DefineConstants>test</DefineConstants>
 	</PropertyGroup>
-	<ItemGroup>	  
+	<ItemGroup>	    
 	  <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\src\FreeRedis\FreeRedis.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
 	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
@@ -36,5 +33,8 @@
 	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
 	    <Version>6.0.1</Version>
 	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\src\FreeRedis\FreeRedis.csproj" />
 	</ItemGroup>
 </Project>

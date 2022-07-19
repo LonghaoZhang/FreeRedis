@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Jst.Standard.Cache
 {
-    public class CacheServiceBase
+    public class CacheServiceBase:BaseRedis
     {
-        internal static HashSet<string> FilterKeys { get; set; }
+        public static HashSet<string> FilterKeys { get; set; }
         public static void AddFilterKeys(string key)
         {
             if (FilterKeys == null)

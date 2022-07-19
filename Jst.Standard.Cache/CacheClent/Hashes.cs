@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jst.Standard.Cache
 {
-    public partial class CacheClient<T>:ICacheClient<T>
+    public partial class CacheClient<T>: BaseRedis,ICacheClient<T>
     {
         public Dictionary<string, T> HGET(string key, Func<string, Dictionary<string, T>> data, TimeSpan timeout)
         {
@@ -14,13 +14,13 @@ namespace Jst.Standard.Cache
             string lockKey = $"redis_hset_key_{key}";
             lock (lockKey)
             {
-                var t = redisClient.HGetAll<T>(key);
+                var t = Client.HGetAll<T>(key);
                 if (t == null)
                 {
                     var tData = data.Invoke(key);
                     if (tData == null)
                     {
-                        redisClient.HSet(key, tData);
+                        Client.HSet(key, tData);
                         return tData;
                     }
                 }
@@ -33,13 +33,13 @@ namespace Jst.Standard.Cache
             string lockKey = $"redis_hset_key_{key}_{filed}";
             lock (lockKey)
             {
-                var t = redisClient.HGet<T>(key, filed);
+                var t = Client.HGet<T>(key, filed);
                 if (t == null)
                 {
                     T tData = data.Invoke(key);
                     if (tData == null)
                     {
-                        redisClient.HSet(key, filed, tData);
+                        Client.HSet(key, filed, tData);
                         return tData;
                     }
                 }
@@ -49,7 +49,7 @@ namespace Jst.Standard.Cache
         public long HDel(string key, params string[] fields)
         {
             key = $"{ObjectCachePrefixKey}:{key}";
-            return redisClient.HDel(key, fields);
+            return Client.HDel(key, fields);
         }
     }
 }
