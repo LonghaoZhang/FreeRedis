@@ -1,10 +1,6 @@
 ﻿using FreeRedis;
-using Jst.Standard.Cache;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 
 namespace S3.Console48
 {
@@ -47,6 +43,7 @@ namespace S3.Console48
             //var key = "name";
             while (true)
             {
+                
                 // Console.WriteLine(_cliLazyCache.IsValueCreated.ToString()+"---"+ _cliLazy.IsValueCreated);
                // Console.WriteLine($"cache-clientid={cache.ClientId()}，val= " + cache.Get(key));
                 Console.WriteLine($"free，val="+ cache1.Get("Erp:Auto:CLG:name"));               

@@ -72,15 +72,20 @@ namespace FreeRedis
                 };
                 _cli.Connected += (_, e) =>
                 {
-                    var redirectId = GetOrAddClusterTrackingRedirectId(e.Host, e.Pool);
-                    e.Client.ClientTracking(true, redirectId, null, false, false, false, false);
+                    var redirectId = GetOrAddClusterTrackingRedirectId(e.Host, e.Pool);                   
+                    e.Client.ClientTracking(true, redirectId, null, false, false, false, false);                   
                 };
+
                 if (_cli.Adapter.UseType == RedisClient.UseType.Cluster)
                 {
                     var adapter = _cli.Adapter as RedisClient.ClusterAdapter;
                     adapter._ib.GetAll().ForEach(a =>
                     {
-                        using (a.Get()) { }
+                        if (!adapter._ib.GetAll().LastOrDefault().Equals(a))
+                        {
+                            var redirectId = GetOrAddClusterTrackingRedirectId(a._policy._connectionStringBuilder.Host, a);
+                            a.Get().Value.ClientTracking(true, redirectId, null, false, false, false, false);
+                        }
                     });
                 }
             }
@@ -125,6 +130,9 @@ namespace FreeRedis
                             }
                         };
                         tracking.PubSub = tracking.Client.Subscribe("__redis__:invalidate", InValidate) as IPubSubSubscriber;
+#if DEBUG
+                        Console.WriteLine("cluster __redis__:invalidate");
+#endif
                         _clusterTrackings.Add(poolkey, tracking);
                     }
                 }
