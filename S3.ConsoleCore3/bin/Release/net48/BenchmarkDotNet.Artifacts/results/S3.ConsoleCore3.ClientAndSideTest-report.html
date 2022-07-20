@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>S3.ConsoleCore3.ClientAndSideTest-20220715-104903</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1766 (21H2)
+11th Gen Intel Core i7-11370H 3.30GHz, 1 CPU, 8 logical and 4 physical cores
+  [Host]     : .NET Framework 4.8 (4.8.4515.0), X64 RyuJIT
+  Job-MNUBEA : .NET Core 3.1.22 (CoreCLR 4.700.21.56803, CoreFX 4.700.21.57101), X64 RyuJIT
+  Job-RLKOES : .NET Framework 4.8 (4.8.4515.0), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th> Method</th><th> Job</th><th>     Runtime</th><th> Mean</th><th>Error</th><th>StdDev</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>OnlyRedis</td><td>Job-MNUBEA</td><td>.NET Core 3.1</td><td>1,061.63 &mu;s</td><td>37.698 &mu;s</td><td>107.553 &mu;s</td><td>6,072 B</td>
+</tr><tr><td>ClientAndSide</td><td>Job-MNUBEA</td><td>.NET Core 3.1</td><td>33.41 &mu;s</td><td>4.812 &mu;s</td><td>13.651 &mu;s</td><td>1,528 B</td>
+</tr><tr><td>OnlyRedis</td><td>Job-RLKOES</td><td>.NET Framework 4.8</td><td>1,161.25 &mu;s</td><td>56.147 &mu;s</td><td>162.893 &mu;s</td><td>98,352 B</td>
+</tr><tr><td>ClientAndSide</td><td>Job-RLKOES</td><td>.NET Framework 4.8</td><td>23.18 &mu;s</td><td>3.395 &mu;s</td><td>9.956 &mu;s</td><td>-</td>
+</tr></tbody></table>
+</body>
+</html>

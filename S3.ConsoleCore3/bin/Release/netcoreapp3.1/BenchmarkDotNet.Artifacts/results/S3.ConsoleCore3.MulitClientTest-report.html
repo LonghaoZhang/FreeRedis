@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>S3.ConsoleCore3.MulitClientTest-20220714-163605</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1766 (21H2)
+11th Gen Intel Core i7-11370H 3.30GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK=6.0.200
+  [Host]     : .NET Core 3.1.22 (CoreCLR 4.700.21.56803, CoreFX 4.700.21.57101), X64 RyuJIT  [AttachedDebugger]
+  Job-VVIQTX : .NET Core 3.1.22 (CoreCLR 4.700.21.56803, CoreFX 4.700.21.57101), X64 RyuJIT
+  Job-IFIEGQ : .NET Framework 4.8 (4.8.4515.0), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>       Method</th><th> Job</th><th>     Runtime</th><th> Mean</th><th>Error</th><th>StdDev</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>ExchangeRedisGetSet</td><td>Job-VVIQTX</td><td>.NET Core 3.1</td><td>1,276.6 &mu;s</td><td>61.80 &mu;s</td><td>178.31 &mu;s</td><td>8,416 B</td>
+</tr><tr><td>FreeRedisGetSet</td><td>Job-VVIQTX</td><td>.NET Core 3.1</td><td>1,095.3 &mu;s</td><td>51.68 &mu;s</td><td>146.61 &mu;s</td><td>2,792 B</td>
+</tr><tr><td>CSRedisGetSet</td><td>Job-VVIQTX</td><td>.NET Core 3.1</td><td>1,032.5 &mu;s</td><td>33.86 &mu;s</td><td>92.70 &mu;s</td><td>1,416 B</td>
+</tr><tr><td>CacheGetSet</td><td>Job-VVIQTX</td><td>.NET Core 3.1</td><td>15,023.9 &mu;s</td><td>299.32 &mu;s</td><td>687.74 &mu;s</td><td>3,488 B</td>
+</tr><tr><td>ExchangeRedisGetSet</td><td>Job-IFIEGQ</td><td>.NET Framework 4.8</td><td>1,254.2 &mu;s</td><td>54.22 &mu;s</td><td>156.43 &mu;s</td><td>24,576 B</td>
+</tr><tr><td>FreeRedisGetSet</td><td>Job-IFIEGQ</td><td>.NET Framework 4.8</td><td>1,045.8 &mu;s</td><td>34.70 &mu;s</td><td>99.00 &mu;s</td><td>90,160 B</td>
+</tr><tr><td>CSRedisGetSet</td><td>Job-IFIEGQ</td><td>.NET Framework 4.8</td><td>1,063.8 &mu;s</td><td>36.10 &mu;s</td><td>103.57 &mu;s</td><td>-</td>
+</tr><tr><td>CacheGetSet</td><td>Job-IFIEGQ</td><td>.NET Framework 4.8</td><td>14,404.0 &mu;s</td><td>406.76 &mu;s</td><td>1,180.08 &mu;s</td><td>90,160 B</td>
+</tr></tbody></table>
+</body>
+</html>

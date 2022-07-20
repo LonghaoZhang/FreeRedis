@@ -53,6 +53,9 @@ namespace FreeRedis
             public void Start()
             {
                 _sub = _cli.Subscribe("__redis__:invalidate", InValidate) as IPubSubSubscriber;
+#if DEBUG
+                Console.WriteLine("__redis__:invalidate");
+#endif
                 _cli.Interceptors.Add(() => new MemoryCacheAop(this));
                 _cli.Unavailable += (_, e) =>
                 {
@@ -69,8 +72,8 @@ namespace FreeRedis
                 };
                 _cli.Connected += (_, e) =>
                 {
-                    var redirectId = GetOrAddClusterTrackingRedirectId(e.Host, e.Pool);
-                    e.Client.ClientTracking(true, redirectId, null, false, false, false, false);
+                    var redirectId = GetOrAddClusterTrackingRedirectId(e.Host, e.Pool);                   
+                    e.Client.ClientTracking(true, redirectId, null, false, false, false, false);                   
                 };
 
                 //将已预热好的连接，执行 ClientTracking REDIRECT
@@ -136,6 +139,9 @@ namespace FreeRedis
                             }
                         };
                         tracking.PubSub = tracking.Client.Subscribe("__redis__:invalidate", InValidate) as IPubSubSubscriber;
+#if DEBUG
+                        Console.WriteLine("cluster __redis__:invalidate");
+#endif
                         _clusterTrackings.Add(poolkey, tracking);
                     }
                 }
@@ -144,6 +150,7 @@ namespace FreeRedis
 
             void InValidate(string chan, object msg)
             {
+
                 if (msg == null)
                 {
                     //flushall
@@ -152,6 +159,9 @@ namespace FreeRedis
                     return;
                 }
                 var keys = msg as object[];
+#if DEBUG
+                Console.WriteLine($"removeCache chan={chan},keys={string.Join(",",keys)}");
+#endif
                 if (keys != null)
                 {
                     foreach (var key in keys)
@@ -169,6 +179,12 @@ namespace FreeRedis
             readonly object _dictLock = new object();
             bool TryGetCacheValue(string key, Type valueType, out object value)
             {
+#if DEBUG
+                if (_dict != null&&_dict.Count>0)
+                {
+                    Console.WriteLine("本地缓存获取：count="+_dict.Count+",key"+ string.Join(",", _dict.Keys.ToList()) );
+                }
+#endif
                 if (_dict.TryGetValue(key, out var trydictval) && trydictval.Values.TryGetValue(valueType, out var tryval)
                     //&& DateTime.Now.Subtract(_dt2020.AddSeconds(tryval.SetTime)) < TimeSpan.FromMinutes(5)
                     )
@@ -261,7 +277,7 @@ namespace FreeRedis
                 bool _iscached = false;
                 public void Before(InterceptorBeforeEventArgs args)
                 {
-                    switch (args.Command._command)
+                    switch (args.Command._command) 
                     {
                         case "GET":
                             if (_cscc.TryGetCacheValue(args.Command.GetKey(0), args.ValueType, out var getval))

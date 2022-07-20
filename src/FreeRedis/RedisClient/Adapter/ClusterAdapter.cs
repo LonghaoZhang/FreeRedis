@@ -116,6 +116,9 @@ namespace FreeRedis
                             }
                             rds.Write(cmd);
                             rt = rds.Read(cmd);
+                            #if DEBUG
+                            Console.WriteLine($"cluster 读取远程redis value = {rt.Value.ConvertTo<string>()}");
+                            #endif
                         }
                         catch (ProtocolViolationException)
                         {
@@ -187,6 +190,7 @@ namespace FreeRedis
                         var cnodes = AdapterCall<string>("CLUSTER".SubCommand("NODES"), rt => rt.ThrowOrValue<string>()).Split('\n');
                         foreach (var cnode in cnodes)
                         {
+                            //Console.WriteLine($"jst aly redis node----{cnode}");
                             if (string.IsNullOrEmpty(cnode)) continue;
                             var dt = cnode.Trim().Split(' ');
                             if (dt.Length < 9) continue;

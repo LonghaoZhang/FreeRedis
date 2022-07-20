@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
+    <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
+    <AssemblyTitle>c1ba4f86-279e-4e90-8bb8-4a8d4abe2f12</AssemblyTitle>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>c1ba4f86-279e-4e90-8bb8-4a8d4abe2f12</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <OutputPath>bin\Release</OutputPath>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <UseSharedCompilation>false</UseSharedCompilation>
+    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+    
+    <!-- we set LangVersion after  which might contain LangVersion copied from the benchmarks project -->
+    <LangVersion Condition="'$(LangVersion)' == '' Or '$(LangVersion)' &lt; '7.3'">latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="c1ba4f86-279e-4e90-8bb8-4a8d4abe2f12.notcs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="D:\work\github\FreeRedis\Global.ConsoleCore3\Global.ConsoleCore3.csproj" />
+  </ItemGroup>
+  
+
+</Project>

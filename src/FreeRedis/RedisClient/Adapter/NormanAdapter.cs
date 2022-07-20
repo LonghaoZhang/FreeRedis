@@ -111,6 +111,9 @@ namespace FreeRedis
                         {
                             rds.Write(cmd);
                             rt = rds.Read(cmd);
+#if DEBUG
+                            Console.WriteLine($"norman 读取远程redis value = {rt.Value.ConvertTo<string>()}");
+#endif
                         }
                         catch (ProtocolViolationException)
                         {

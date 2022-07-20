@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net50;netstandard2.1;netstandard2.0;netcoreapp3.1;net48;</TargetFrameworks>
+		<Version>1.0.1</Version>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' != 'net40'">
+		<DefineConstants>test</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>	    
+	  <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
+	    <Version>6.0.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
+	    <Version>6.0.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
+	    <Version>6.0.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
+	    <Version>6.0.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory">
+	    <Version>6.0.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\src\FreeRedis\FreeRedis.csproj" />
+	</ItemGroup>
+</Project>

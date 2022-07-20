@@ -12,7 +12,7 @@ namespace console_netcore31_benchmark
         static Lazy<RedisClient> _cliLazy = new Lazy<RedisClient>(() =>
         {
             //var r = new RedisClient("127.0.0.1:6379", false); //redis 3.2 Single test
-            var r = new RedisClient("127.0.0.1:6379,database=1,poolsize=100,min pool size=100"); //redis 3.2
+            var r = new RedisClient("192.168.48.123:6379,database=1,poolsize=100,min pool size=100"); //redis 3.2
             //var r = new RedisClient("127.0.0.1:6379,database=1", "127.0.0.1:6379,database=1");
             //var r = new RedisClient("192.168.164.10:6379,database=1"); //redis 6.0
             r.Serialize = obj => JsonConvert.SerializeObject(obj);
@@ -21,8 +21,8 @@ namespace console_netcore31_benchmark
             return r;
         });
         static RedisClient cli => _cliLazy.Value;
-        static CSRedis.CSRedisClient csredis = new CSRedis.CSRedisClient("127.0.0.1:6379,database=2,poolsize=100");
-        static StackExchange.Redis.ConnectionMultiplexer seredis = StackExchange.Redis.ConnectionMultiplexer.Connect("127.0.0.1:6379");
+        static CSRedis.CSRedisClient csredis = new CSRedis.CSRedisClient("192.168.48.123:6379,database=2,poolsize=100");
+        static StackExchange.Redis.ConnectionMultiplexer seredis = StackExchange.Redis.ConnectionMultiplexer.Connect("192.168.48.123:6379");
         static StackExchange.Redis.IDatabase sedb = seredis.GetDatabase(1);
 
         public static void Main(string[] args)
@@ -31,7 +31,7 @@ namespace console_netcore31_benchmark
             cli.Set("TestMGet_string1", String);
             RedisHelper.Set("TestMGet_string1", String);
             sedb.StringSet("TestMGet_string1", String);
-
+            Console.WriteLine("-------------------------");
             var summary = BenchmarkRunner.Run<SetVs>();
         }
 
