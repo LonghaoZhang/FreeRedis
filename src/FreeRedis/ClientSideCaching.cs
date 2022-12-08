@@ -182,7 +182,7 @@ namespace FreeRedis
 #if DEBUG
                 if (_dict != null&&_dict.Count>0)
                 {
-                    Console.WriteLine("本地缓存获取：count="+_dict.Count+",key"+ string.Join(",", _dict.Keys.ToList()) );
+                    Console.WriteLine("本地缓存获取：count="+_dict.Count+",key="+ string.Join(",", _dict.Keys.ToList()) );
                 }
 #endif
                 if (_dict.TryGetValue(key, out var trydictval) && trydictval.Values.TryGetValue(valueType, out var tryval)
@@ -236,13 +236,16 @@ namespace FreeRedis
                 if (keys?.Any() != true) return;
                 foreach (var key in keys)
                 {
-                    if (_dict.TryRemove(key, out var old))
+                    if (_options.KeyFilter?.Invoke(key) != false)
                     {
-                        if (_options.Capacity > 0)
+                        if (_dict.TryRemove(key, out var old))
                         {
-                            lock (_dictLock)
+                            if (_options.Capacity > 0)
                             {
-                                _dictSort.Remove($"{old.GetTime.ToString("X").PadLeft(16, '0')}{key}");
+                                lock (_dictLock)
+                                {
+                                    _dictSort.Remove($"{old.GetTime.ToString("X").PadLeft(16, '0')}{key}");
+                                }
                             }
                         }
                     }

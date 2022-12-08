@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Jst.Standard.Cache
 {
-    public class CacheServiceBase:BaseRedis
+    public class CacheServiceBase : BaseRedis
     {
+        static CacheServiceBase()
+        {
+            FilterKeys = new HashSet<string>() { "ERP:AUTO:CAS:" };
+        }
         public static HashSet<string> FilterKeys { get; set; }
         public static void AddFilterKeys(string key)
         {

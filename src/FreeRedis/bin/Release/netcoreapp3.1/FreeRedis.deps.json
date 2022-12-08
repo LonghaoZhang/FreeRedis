@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "FreeRedis/0.5.4": {
+      "FreeRedis/0.5.6": {
         "runtime": {
           "FreeRedis.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "FreeRedis/0.5.4": {
+    "FreeRedis/0.5.6": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
