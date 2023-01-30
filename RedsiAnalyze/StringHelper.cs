@@ -10,7 +10,7 @@ namespace RedsiAnalyze
     {
         public static string GetPrefix(this string key,int deep)
         {
-            string standardKey = key.Replace(".",":").Replace("@",":");
+            string standardKey = key.Replace(".",":").Replace("@",":").Replace("-",":").Replace("_", ":");
             string result = string.Empty;
             for (var i = 0; i < deep; i++)
             {

@@ -42,21 +42,21 @@ namespace RedsiAnalyze
 			r.Notice += (s, e) => Trace.WriteLine(e.Log);
 			return r;
 		});
-		//static Lazy<RedisClient> _cliLazyCache0 = new Lazy<RedisClient>(() =>
-		//{
+        static Lazy<RedisClient> _cliLazyErp321 = new Lazy<RedisClient>(() =>
+        {
 
-		//	var constr = ConfigurationManager.AppSettings["redis.config.cache0"];
-		//	var r = new RedisClient(constr); //redis 6.0
-		//									 // var r = new RedisClient(connectionString); //redis 6.0
-		//	r.Serialize = obj => JsonConvert.SerializeObject(obj);
-		//	r.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);
-		//	r.Notice += (s, e) => Trace.WriteLine(e.Log);
-		//	return r;
-		//});
-		public static RedisClient cliTest => _cliLazyTest.Value;
-		//public static RedisClient cliCache0 => _cliLazyCache0.Value;
+            var constr = ConfigurationManager.AppSettings["redis.config.erp321"];
+            var r = new RedisClient(constr); //redis 6.0
+                                             // var r = new RedisClient(connectionString); //redis 6.0
+            r.Serialize = obj => JsonConvert.SerializeObject(obj);
+            r.Deserialize = (json, type) => JsonConvert.DeserializeObject(json, type);
+            r.Notice += (s, e) => Trace.WriteLine(e.Log);
+            return r;
+        });
+        public static RedisClient cliTest => _cliLazyTest.Value;		
 		public static RedisClient cliMaster => _cliLazyMaster.Value;
 		public static RedisClient cliLargeMaster => _cliLazyLarge.Value;
+		public static RedisClient cliLargeErp321 => _cliLazyErp321.Value;
 
 		public static RedisClient cli(int db)
 		{
@@ -66,9 +66,9 @@ namespace RedsiAnalyze
 				return cliMaster;
 			if (db == 3)
 				return cliLargeMaster;
-			//if (db == 4)
-			//	return cliCache0;
-			return cliTest;
+            if (db == 4)
+                return cliLargeErp321;
+            return cliTest;
 		}
 	}
 }

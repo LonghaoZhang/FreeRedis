@@ -17,6 +17,7 @@ namespace RedsiAnalyze
             List<string> matchs = new List<string>();
             if (useAnalyzeKeys == 0)
             {
+                matchs.Clear();
                 "match pattern：default Erp:*".WriteLineBlue();
                 var match = defaultString();
                 matchs.Add(match);
@@ -29,10 +30,10 @@ namespace RedsiAnalyze
             $"now datetime : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}".WriteLineYellow();
             foreach (var match in matchs)
             {
-                var pattern = string.Empty;
+                var pattern = match;
                 if (!match.EndsWith("*"))
                 {
-                    pattern= match+"*";
+                    pattern = match + "*";
                 }                
                 long maxTtl = 0;
                 var maxTtlKey = string.Empty;
@@ -114,8 +115,13 @@ namespace RedsiAnalyze
             return string.IsNullOrEmpty(match) ? defaultStr : match;
         }
         static int defaultInt(int defaultInt = 10000)
-        {
-            return Convert.ToInt32(defaultString(defaultInt.ToString()).TrimEnd('*'));
+        {            
+            var v = defaultString(defaultInt.ToString()).TrimEnd('*');
+            if (v.IndexOf("Erp") >= 0)
+            {
+                v = "0";
+            }
+            return Convert.ToInt32(v);
         }
     }
 }

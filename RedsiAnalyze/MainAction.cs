@@ -41,6 +41,9 @@ namespace RedsiAnalyze
                 case "9":
                     cli.RunExceptionDataDeal();
                     break;
+                case "0":
+                    cli.RunTTLKeyCountAnalyze();
+                    break;
             }
         }
     }

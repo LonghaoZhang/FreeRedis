@@ -17,10 +17,10 @@ namespace RedsiAnalyze
                 "clear last analyze data? yes=1,no=0,default=1".WriteLineBlue();
                 StatisticsHelper.Init(defaultInt(1));
                 ColorConsole.WriteLineBlue("DB Select,default 1;");
-                ColorConsole.WriteLine("Descript： test=1,master=2,large-master=3");
+                ColorConsole.WriteLine("Descript： test=1,master=2,large-master=3,erp321=4");
                 var cli = RedisBase.cli(defaultInt(1));
                 ColorConsole.WriteLineBlue("Function Select,default 1;");
-                ColorConsole.WriteLine("Descript： info=1,clientlist=2,config=3,MemoryStats=4,keydistribution=5,ttl=6,bigkey=7,slowlog=8,dealtestdata=9");
+                ColorConsole.WriteLine("Descript： info=1,clientlist=2,config=3,MemoryStats=4,keydistribution=5,ttl=6,bigkey=7,slowlog=8,dealtestdata=9,TTL key count distribution=0");
                 cli.Start(Console.ReadLine());
                 "\r\n---- .. analyze over .. ----".WriteLineBlue();
                 Console.ReadLine();
