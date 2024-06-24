@@ -26,6 +26,7 @@ namespace Jst.Standard.Cache
         });
        
         public static RedisClient Client => _cliLazy.Value;
+        public static bool LoadedClientSideCaching { get; set; }
     }
     
 }

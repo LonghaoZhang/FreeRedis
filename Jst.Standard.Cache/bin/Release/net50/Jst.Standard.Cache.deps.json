@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v5.0": {
       "Jst.Standard.Cache/1.0.1": {
         "dependencies": {
-          "FreeRedis": "0.5.4",
+          "FreeRedis": "0.5.6",
           "Microsoft.Extensions.Caching.Memory": "6.0.1",
           "Newtonsoft.Json": "9.0.1"
         },
@@ -440,7 +440,7 @@
           "System.Xml.ReaderWriter": "4.0.11"
         }
       },
-      "FreeRedis/0.5.4": {
+      "FreeRedis/0.5.6": {
         "runtime": {
           "FreeRedis.dll": {}
         }
@@ -768,7 +768,7 @@
       "path": "system.xml.xdocument/4.0.11",
       "hashPath": "system.xml.xdocument.4.0.11.nupkg.sha512"
     },
-    "FreeRedis/0.5.4": {
+    "FreeRedis/0.5.6": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -33,7 +33,7 @@ namespace Jst.Standard.Cache
         {
             lock (_mutilTypeNameLock)
             {
-                var ObjectCachePrefixKey = CacheHelper.GeneratePrefix<T>(CacheName);
+                var ObjectCachePrefixKey = CacheHelper.GeneratePrefix<T>(storeType,CacheName);
                 var existFilterKeys = CacheServiceBase.FilterKeys?.Contains(ObjectCachePrefixKey)??false;                
                 ICacheClient<T> cacheClient;
                 switch (storeType)
@@ -45,15 +45,15 @@ namespace Jst.Standard.Cache
                         cacheClient = new CacheClient<T>(ObjectCachePrefixKey);
                         if (storeType == CacheStoreType.LoaclAndRedis)
                         {
-                            if (!existFilterKeys)
+                            if (!existFilterKeys&&!LoadedClientSideCaching)
                             {
-                                CacheServiceBase.AddFilterKeys(ObjectCachePrefixKey);
                                 BaseRedis.Client.UseClientSideCaching(new ClientSideCachingOptions
                                 {
                                     Capacity = CacheService<T>.CacheSettings.Capacity,
                                     KeyFilter = key => CacheHelper.KeyFilterStartsWith(CacheServiceBase.FilterKeys, key),
                                     CheckExpired = (key, dt) => DateTime.Now.Subtract(dt) > CacheService<T>.CacheSettings.ClientKeyTimeOut
                                 });
+                                LoadedClientSideCaching = true;
                             }
                         }
                         return cacheClient;

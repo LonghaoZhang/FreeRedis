@@ -7,20 +7,31 @@ using System.Threading.Tasks;
 namespace Jst.Standard.Cache
 {
     public enum CacheStoreType { OnlyLocal, LoaclAndRedis, OnlyReids }
+    public enum BusArchCode { Order, Wms }
+    public class BusArch
+    {
+        string key;
+        public BusArch(String _key)
+        {
+            this.key = _key;
+        }
+        public BusArchCode Order { get; } = BusArchCode.Order;
+        public BusArchCode ERP { get; } = BusArchCode.Wms;
+    }
     public class CacheHelper
     {
         /// <summary>
         /// 生成规则：Erp:Auto:(CacheName==null?TypeName:CacheName): BusKey
         /// </summary>
         /// <param name="busKey"></param>
-        /// <returns></returns>
-        public static string GeneratePrefixKey<T>(string busKey, string CacheName = null)
+        /// <returns></returns>  
+        public static string GeneratePrefix<T>(CacheStoreType storeType, string CacheName = null)
         {
-            return string.IsNullOrEmpty(CacheName) ? $"Erp:Auto:{typeof(T).Name}:{busKey}" : $"Erp:Auto:{CacheName}:{busKey}";
-        }
-        public static string GeneratePrefix<T>(string CacheName = null)
-        {
-            return string.IsNullOrEmpty(CacheName) ? $"Erp:Auto:{typeof(T).Name}" : $"Erp:Auto:{CacheName}";
+            if (storeType == CacheStoreType.LoaclAndRedis)
+            {
+                return string.IsNullOrEmpty(CacheName) ? $"ERP:AUTO:CAS:{typeof(T).Name}" : $"ERP:AUTO:CAS:{CacheName}";
+            }
+            return string.IsNullOrEmpty(CacheName) ? $"ERP:AUTO:{typeof(T).Name}" : $"ERP:AUTO:{CacheName}";
         }
         public static bool KeyFilterStartsWith(HashSet<string> filterKeys, string key)
         {
@@ -32,6 +43,32 @@ namespace Jst.Standard.Cache
                 }
             }
             return false;
+        }
+
+    }
+    public static class KeyHelper
+    {
+        public static string CacheOrderKey(this string key)
+        {
+            return "";
+        }
+        public static string CacheWmsKey(this string key)
+        {
+            return "";
+        }
+        public static string CacheMidKey(this string key)
+        {
+            return "";
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="busCode"></param>
+        /// <param name="tableName"></param>
+        public static string GenerateKey(this string key, string busCode, string tableName)
+        {
+            return "";  
         }
     }
 }

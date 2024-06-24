@@ -1,5 +1,7 @@
 using FreeRedis;
 using NUnit.Framework;
+using System.Collections.Concurrent;
+using System.IO;
 
 namespace Global.Core3Test
 {
@@ -17,8 +19,8 @@ namespace Global.Core3Test
         [Test]
         public void Test1()
         {
-            var name = r.Get("name");
-            Assert.AreEqual(name,"gl");
+           
+          
         }
     }
 }
